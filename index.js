@@ -21,5 +21,5 @@ application.get("/stations", (req, res) => {
 })
 
 application.listen(8080, () => {
-    console.log("Application in running");
+    console.log("Application in running well");
 });
