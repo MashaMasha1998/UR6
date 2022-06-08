@@ -1,17 +1,1 @@
-[
-    {
-        "id":"0",
-        "address":"690 Collins Avenue. Worthington",
-        "status":"0"
-    },
-    {
-        "id":"1",
-        "addres":"2681 Doctors Drive. Santa Monica",
-        "status":"1"
-    },
-    {
-        "id":"2",
-        "addres":"2685 Doctors Drives. Santa Monica",
-        "status":"0"
-    }
-]
+[{"id":"0","address":"690 Collins Avenue. Worthington","status":"0"},{"id":"1","addres":"2681 Doctors Drive. Santa Monica","status":"1"},{"id":"2","addres":"2685 Doctors Drives. Santa Monica","status":"0"},{"id":"4","address":"695 Collins Avenue. Worthington","status":"0"}]
