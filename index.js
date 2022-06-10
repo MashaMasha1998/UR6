@@ -39,6 +39,13 @@ application.get("/stations/:id", (req, res) => {
         })
     });
 
+application.put("/stations/:id", (req, res) => {
+    fs.readFile("./stations.json").then( fileContent  => {
+        res.json(JSON.parse(fileContent).filter(s => s.status === req.params.id));
+        })
+    });
+
+
 application.listen(8080, () => {
     console.log("Application in running well for you");
 });
