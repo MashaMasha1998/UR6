@@ -23,6 +23,16 @@ application.post("/stations", (req, res) => {
     }).catch(err => console.error(err));
 })
 
+
+application.delete("/stations/:id", (req, res) => {
+    fs.readFile("./stations.json").then( fileContent  => {
+        const fileArray = JSON.parse(fileContent).filter(s => s.id != req.params.id);
+        fs.writeFile("./stations.json", JSON.stringify(fileArray)).then(() => {
+            res.sendStatus(200);
+        })
+    }).catch(err => console.error(err));
+})
+
 application.listen(8080, () => {
     console.log("Application in running well for you");
 });
