@@ -37,14 +37,18 @@ application.get("/stations/:id", (req, res) => {
     fs.readFile("./stations.json").then( fileContent  => {
         res.json(JSON.parse(fileContent).filter(s => s.id === req.params.id));
         })
-    });
+});
 
 application.put("/stations/:id", (req, res) => {
     fs.readFile("./stations.json").then( fileContent  => {
-        res.json(JSON.parse(fileContent).filter(s => s.status === req.params.id));
+        const parsedData = JSON.parse(fileContent);
+        const stationToBeChanged = parsedData.filter(record => record.id === req.params.id)[0];
+        stationToBeChanged.status = req.body.status;
+        fs.writeFile("./stations.json", JSON.stringify(parsedData)).then(() => {
+            res.sendStatus(200);
         })
-    });
-
+    }).catch(err => console.error(err));
+})
 
 application.listen(8080, () => {
     console.log("Application in running well for you");
