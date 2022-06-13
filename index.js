@@ -39,14 +39,13 @@ application.get("/stations/:id", (req, res) => {
         })
 });
 
+
 application.put("/stations/:id", (req, res) => {
     fs.readFile("./stations.json").then( fileContent  => {
-        const parsedData = JSON.parse(fileContent);
-        const stationToBeChanged = parsedData.filter(record => record.id === req.params.id)[0];
-        stationToBeChanged.status = req.body.status;
-        fs.writeFile("./stations.json", JSON.stringify(parsedData)).then(() => {
+        let resultArray = JSON.parse(fileContent).map( s => s.id == req.params.id ? {...s, ...req.body} : s);
+        fs.writeFile("./stations.json", JSON.stringify(resultArray)).then(() => {
             res.sendStatus(200);
-        })
+        });
     }).catch(err => console.error(err));
 })
 
