@@ -1,9 +1,18 @@
 const ex = require('express');
 const { path } = require('express/lib/application');
+const cors = require('cors');
 const fs = require('fs.promises')
 
 const application = ex();
 application.use(ex.json())
+
+application.use(cors());
+
+application.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 application.get("/stations", (req, res) => {
     fs.readFile("./stations.json").then( fileContent  => {
@@ -36,7 +45,7 @@ application.delete("/stations/:id", (req, res) => {
 application.get("/stations/:id", (req, res) => {
     fs.readFile("./stations.json").then( fileContent  => {
         res.json(JSON.parse(fileContent).filter(s => s.id === req.params.id));
-        })
+    })
 });
 
 
