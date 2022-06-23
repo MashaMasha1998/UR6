@@ -1,118 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <script type="application/javascript">
-
-        async function refreshStations() {
-            let response = await fetch("http://localhost:8080/stations")
-            let stations = await response.json()
-         
-            for (let i = 0; i < stations.length; i++) {
-
-                let tr = document.createElement("tr");
-                let tdId = document.createElement("td");
-                let tdAddres = document.createElement("td");
-                let tdStatus = document.createElement("td");
-                let tdDelete = document.createElement("button");
-                let tdEdit = document.createElement("button");
-
-                tdId.innerText = stations[i].id
-                tdAddres.innerText = stations[i].addres
-                tdStatus.innerText = stations[i].status
-                tdDelete.innerText = "Delete"
-                tdDelete.onclick = function() {
-                    deleteStations(stations[i].id)
-                }
-                tdEdit.innerText = "Update"
-                tdEdit.onclick = function() {
-                    editStations(stations[i])
-                }
-
-                tr.appendChild(tdId)
-                tr.appendChild(tdAddres)
-                tr.appendChild(tdStatus)
-                tr.appendChild(tdDelete)
-                tr.appendChild(tdEdit)
-
-                var table = document.getElementById("table");
-                table.appendChild(tr);
-            }   
-        }
-
-        function deleteStations(id) {
-            let response = fetch('http://localhost:8080/stations/'+ id, {
-                method: "Delete",
-            })
-        }
-
-        function createNewStation(stations) {
-            const form = document.getElementById("newStation")
-            const formData = new FormData(form);
-            let resp = {}
-            for (let [key, value] of formData.entries()) { 
-                resp[key] = value; 
-            }
-
-            fetch("http://localhost:8080/stations", {
-                method: "POST",
-                
-                headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
-                body: JSON.stringify(resp)
-            })
-        }
-
-        function editStations(stations) {
-            document.forms["newStation"].elements["id"].value = stations.id
-            document.forms["newStation"].elements["addres"].value = stations.addres
-            document.forms["newStation"].elements["status"].value = stations.status
-        }
-        
-        function onUpdateStation (){
-            const form = document.getElementById("newStation")
-            const formData = new FormData(form);
-            let station = {}
-            for (let [key, value] of formData.entries()) { 
-                station[key] = value; 
-            }
-            
-            fetch('http://localhost:8080/stations/' + station.id, {
-                method: "PUT",
-                
-                headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
-                body: JSON.stringify(station)
-            })
-        }
-
-    </script>
-</head>
-<body>
-
-    <button onclick="refreshStations()">Show station</button> 
-
-    <table id = "table">
-        <tr>
-            <th>Id</th>
-            <th>Addres</th>
-            <th>Status</th>
-            <th>Delete</th>
-            <th>Edit</th>
-        </tr>
-    </table>
-
-    <form id="newStation" action="form" method="post">
-        <h1>Add or update stations</h1>
-        <input id="idNew" type="number" name="id">
-        <input id="addresNew" type="text" name="addres">
-        <input id="statusNew" type="text" name="status">
-    </form>
-    <button onclick="createNewStation()">New station</button>
-
-    <button onclick="onUpdateStation()">Update station</button>
-
-</body>
-</html>
+<meta charset="UTF-8">
+<title>Title</title>
+<link rel="stylesheet" type="text/css" href="station.css">
+<script src="station.js"></script>
+    </head>
+    
+    <body>
+        <h1 class="title" style="text-align:center;"> Stations lists </h1></br>
+        <div class="d9">
+            <button class="btn" onclick="getStation()">Refresh station</button>
+            <table class="table" id="table">
+                <tr>
+                    <th>id</th>
+                    <th>address</th>
+                    <th>status</th>
+                    <th></th>
+                </tr>
+                <tbody id="stationsTable">
+                </tbody>
+            </table>
+        </div>
+    
+        <div class="container">
+            <form class="form-group" id="newStation" action="form" method="post" ,>
+                <label>Enter id</label>
+                <input id="idNew" type="text" name="id"><br>
+                <label>Enter address</label>
+                <input id="addressNew" type="text" name="address"><br>
+                <label>Enter status</label>
+                <input id="statusNew" type="text" , name="status">
+            </form>
+            <button class="btn" onclick="createNewStation()">Save</button>
+            <button class="btn" onclick="onUpdate()">Update</button>
+        </div>
+    </body>
+    </html>
