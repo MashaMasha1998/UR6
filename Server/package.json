@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "npx tsc",
+    "start2": "rm - rf./build && npm run build && node build/index2.js",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,6 +15,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "fs": "0.0.1-security",
-    "fs.promises": "^0.1.2"
+    "fs.promises": "^0.1.2",
+    "typescript": "^4.7.4"
   }
 }
