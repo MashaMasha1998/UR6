@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "start2": "rm - rf./build && npm run build && node build/index2.js",
+    "start2": "rm -rf ./build ; npm run build && node build/test.js",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
