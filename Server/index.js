@@ -1,12 +1,28 @@
 const ex = require('express');
 const { path } = require('express/lib/application');
 const cors = require('cors');
-const fs = require('fs.promises')
+const fs = require('fs.promises');
+const mysql = require('mysql');
 
-const application = ex();
+const application = ex()
 application.use(ex.json())
 
-application.use(cors());
+application.use(cors())
+
+const connection = mysql.createConnection({
+    host: "localhost",
+    user: "Maria",
+    password: "1111",
+    database: "Station"
+});
+
+connection.connect(function (error) {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Successfully connected to DB');
+    }
+});
 
 application.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -15,21 +31,28 @@ application.use(function(req, res, next) {
 });
 
 application.get("/stations", (req, res) => {
-    fs.readFile("./stations.json").then( fileContent  => {
-        res.json(JSON.parse(fileContent));
-    })
+    connection.query('select * from station', (err, data) => {
+        if (err) {
+            console.error(err);
+        }
+        res.send(data);
+    });
 })
 
 application.post("/stations", (req, res) => {
-    const newStation = req.body;
-    console.log("newStation",req.body)
-    fs.readFile("./stations.json").then( fileContent  => {
-        const fileArray = JSON.parse(fileContent);
-        fileArray.push(newStation);
-        fs.writeFile("./stations.json", JSON.stringify(fileArray)).then(() => {
-            res.sendStatus(200);
-        })
-    }).catch(err => console.error(err));
+    connection.query('insert into station (address, status) values (?,?)',
+        [req.body.address, req.body.status], (err, data) => {
+            if (err) {
+                console.error(err);
+            }
+            connection.query('select * from station where id = ?',
+                [data.insertId], (err, data) => {
+                    if (err) {
+                        console.error(err);
+                    }
+                    res.send(data);
+                });
+        });
 })
 
 
